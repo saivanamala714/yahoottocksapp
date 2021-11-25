@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import React from 'react';
+import moment from 'moment';
+import LabeledHeatmap from './graph'
+
+const getTimeStamp = (data) => {
+
+    if (!data) return null;
+    const result = data.chart.result[0];
+    const timestamp = result.timestamp;
+    return timestamp;
+}
+
+const ParsedData = ({data}) => {
+
+    if (!data) return null;
+    const result = data.chart.result[0];
+    const timestamp = result.timestamp;
+    const {open, close, high, low, volume} = result.indicators.quote[0];
+    console.log(timestamp.length)
+
+    return <div>{timestamp.map((item, index) =>   {
+      var dateString = moment.unix(item).format("HH:mm:ss");
+      return <li key={dateString}>{dateString} || {open[index]} || {close[index]} || {high[index]} || {low[index]} || {volume[index]}</li>
+    } )}</div>
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [data, setData] = React.useState(null);
+
+   const alphabet = ['A', 'B'];
+
+    const readApiData = (name) => {
+        axios.get('/getData')
+            .then(res => {
+                const persons = res.data;
+                setData(persons);
+            })
+    }
+    return (
+        <div >
+                <button onClick={readApiData}>Get Data</button>
+                <ParsedData data={data}></ParsedData>
+                <LabeledHeatmap/>
+        </div>
+    );
 }
 
 export default App;
