@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3001;
 const axios = require('axios');
+const _ = require('lodash')
 
 app.get('/getData', (req, res) => {
 
@@ -36,6 +37,58 @@ app.get('/getData', (req, res) => {
       });
 })
 
+
+app.get('/earnings', (req,res) =>{
+  var config = {
+    method: 'get',
+    url: 'https://api.nasdaq.com/api/calendar/earnings?date=2021-12-07',
+    headers: {
+      'authority': 'api.nasdaq.com',
+      'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
+      'accept': 'application/json, text/plain, */*',
+      'sec-ch-ua-mobile': '?1',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Mobile Safari/537.36',
+      'sec-ch-ua-platform': '"Android"',
+      'origin': 'https://www.nasdaq.com',
+      'sec-fetch-site': 'same-site',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-dest': 'empty',
+      'referer': 'https://www.nasdaq.com/',
+      'accept-language': 'en-US,en;q=0.9'
+    }
+  };
+
+  axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        res.send(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.send(error)
+      });
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+
+// const temp = {
+//   "time": "Time",
+//   "symbol": "Symbol",
+//   "name": "Company Name",
+//   "eps": "EPS",
+//   "surprise": "% Surprise",
+//   "marketCap": "Market Cap",
+//   "fiscalQuarterEnding": "Fiscal Quarter Ending",
+//   "epsForecast": "Consensus EPS* Forecast",
+//   "noOfEsts": "# of Ests"
+// }
+//
+// const columns = _.map(temp, (a, b)=> {return {'Header': a, 'accessor' :b}})
+//
+//
+//
+//
+//
+// console.log(JSON.stringify(derivedColumns))
