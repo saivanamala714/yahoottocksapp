@@ -39,9 +39,11 @@ app.get('/getData', (req, res) => {
 
 
 app.get('/earnings', (req,res) =>{
+  console.log(req.query.date)
+  const {date} = req.query;
   var config = {
     method: 'get',
-    url: 'https://api.nasdaq.com/api/calendar/earnings?date=2021-12-07',
+    url: `https://api.nasdaq.com/api/calendar/earnings?date=${date}`,
     headers: {
       'authority': 'api.nasdaq.com',
       'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -60,7 +62,7 @@ app.get('/earnings', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
@@ -70,7 +72,7 @@ app.get('/earnings', (req,res) =>{
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  //console.log(`Example app listening at http://localhost:${port}`)
 })
 
 // const temp = {

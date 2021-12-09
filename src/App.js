@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React from 'react';
 import moment from 'moment';
-import LabeledHeatmap from './graph'
 import styled from 'styled-components'
-import { useTable } from 'react-table'
+import {useTable} from 'react-table'
 import _ from 'lodash'
 // import CssBaseline from '@material-ui/core/CssBaseline'
 // import MaUTable from '@material-ui/core/Table'
@@ -12,7 +10,10 @@ import _ from 'lodash'
 // import TableHead from '@material-ui/core/TableHead'
 // import TableRow from '@material-ui/core/TableRow'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Col, Container, Row} from "react-bootstrap";
+import axios from "axios";
+import {Button, Col, Container, Row} from "react-bootstrap";
+import StockCardList from "./StockCardList";
+import DatePicker from 'react-date-picker';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -20,7 +21,8 @@ const Styles = styled.div`
   table {
     border-spacing: 0;
     border: 1px solid black;
-
+    font-family: sans-serif;
+    font-size: small;
     tr {
       :last-child {
         td {
@@ -51,7 +53,7 @@ const getTimeStamp = (data) => {
     return timestamp;
 }
 
-const  Table = ({ columns, data })  => {
+const Table = ({columns, data}) => {
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -98,17 +100,35 @@ const ParsedData = ({data}) => {
     const result = data.chart.result[0];
     const timestamp = result.timestamp;
     const {open, close, high, low, volume} = result.indicators.quote[0];
-    console.log(timestamp.length)
-
-    return <div>{timestamp.map((item, index) =>   {
-      var dateString = moment.unix(item).format("HH:mm:ss");
-      return <li key={dateString}>{dateString} || {open[index]} || {close[index]} || {high[index]} || {low[index]} || {volume[index]}</li>
-    } )}</div>
+    return <div>{timestamp.map((item, index) => {
+        var dateString = moment.unix(item).format("HH:mm:ss");
+        return <li
+            key={dateString}>{dateString} || {open[index]} || {close[index]} || {high[index]} || {low[index]} || {volume[index]}</li>
+    })}</div>
 }
 
-const MyData = ({data, columns}) => {
-    if(!data) return <h1> No Data</h1>
-    const columns1 = _.map(data.data.headers, (a, b)=> {return {'Header': a, 'accessor' :b}})
+const MyData = ({data}) => {
+    if (!data) return <h1> No Data</h1>
+    const columns1 = _.map(data.data.headers, (a, b) => {
+        if (b === 'time') {
+            return {
+                'Header': a, 'accessor': b, Cell: ({row: {original}}) => {
+                    const {time} = original;
+                    if (time === 'time-not-supplied') {
+                        return <p>n/a</p>
+                    } else if (time === 'time-pre-market') {
+                        return <p>pre</p>
+                    } else {
+                        return <p>post</p>
+                    }
+
+                }
+            };
+        } else {
+            return {'Header': a, 'accessor': b}
+        }
+
+    })
     const derivedColumns = [{Header: 'Name', columns: columns1}]
     return <Table columns={derivedColumns} data={data.data.rows}></Table>
 
@@ -118,83 +138,42 @@ function App() {
 
     const [data, setData] = React.useState();
     const [earnings, setEarnings] = React.useState();
+    const [currentDate, setCurrentDate] = React.useState(new Date());
 
-
-
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: 'Name',
-                columns: [
-                    {
-                        Header: 'First Name',
-                        accessor: 'symbol',
-                    },
-                    {
-                        Header: 'Last Name',
-                        accessor: 'lastName',
-                    },
-                ],
-            },
-            {
-                Header: 'Info',
-                columns: [
-                    {
-                        Header: 'Age',
-                        accessor: 'age',
-                    },
-                    {
-                        Header: 'Visits',
-                        accessor: 'visits',
-                    },
-                    {
-                        Header: 'Status',
-                        accessor: 'status',
-                    },
-                    {
-                        Header: 'Profile Progress',
-                        accessor: 'progress',
-                    },
-                ],
-            },
-        ],
-        []
-    )
-
-   const alphabet = ['A', 'B'];
+    const alphabet = ['A', 'B'];
 
     const readEarningsData = (name) => {
-        axios.get('/earnings')
+        axios.get(`/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
             .then(res => {
                 const persons = res.data;
                 setEarnings(persons);
             })
     }
+
     const readApiData = (name) => {
-        axios.get('/getData')
-            .then(res => {
-                const persons = res.data;
-                setData(persons);
-            })
+
+        // axios.get('/getData')
+        //     .then(res => {
+        //         const persons = res.data;
+        //         setData(persons);
+        //     })
     }
     return (
-        <Styles>
-        <div >
-                <button onClick={readEarningsData}>Get Data</button>
-            <button onClick={readApiData}>Get Data</button>
+                <Container style={{marginLeft: '0px'}}>
 
-                {/*<labeledheatmap/>*/}
+                    <Row>
+                        <Col sm={2}><Button onClick={readEarningsData}>Get Earnings</Button></Col>
+                        <Col sm={2}><Button onClick={readApiData}>Get Stock Data</Button></Col>
+                        <Col sm={5}><DatePicker value={currentDate} onChange={setCurrentDate} format={'MM-dd-yyyy'}></DatePicker></Col>
+                        <Col sm={5}></Col>
+                    </Row>
+                    <Row><StockCardList data={earnings}></StockCardList></Row>
+                    <Row>
+                        <Col sm={6}><Styles><MyData data={earnings} stockData={data}></MyData></Styles></Col>
+                        <Col sm={6}><ParsedData data={data}></ParsedData></Col>
+                    </Row>
 
-            {/*(data && <Table   data={data.rows} />)*/}
-            <Container>
-                <Row>
-                    <Col sm={6}><MyData data={earnings} columns={columns}></MyData></Col>
-                    <Col sm={6}><ParsedData data={data}></ParsedData></Col>
-
-                </Row>
-            </Container>
-        </div>
-        </Styles>
+                </Container>
     );
 }
 

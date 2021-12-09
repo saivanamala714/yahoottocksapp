@@ -17,6 +17,7 @@
     "nodemon": "^2.0.15",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
+    "react-date-picker": "^8.3.6",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "react-table": "^7.7.0",
@@ -29,7 +30,9 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "localServer": "nodemon index.js"
+    "localServer": "nodemon index.js",
+    "local": "npm run localServer && npm run start",
+    "dev": "concurrently --kill-others \"npm run localServer\" \"npm run start\""
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +57,7 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "babel-loader": "^8.1.0",
+    "concurrently": "^6.4.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.9.1"
   },
