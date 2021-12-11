@@ -142,6 +142,8 @@ function App() {
 
     const alphabet = ['A', 'B'];
 
+
+
     const readEarningsData = (name) => {
         axios.get(`/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
             .then(res => {

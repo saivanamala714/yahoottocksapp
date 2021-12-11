@@ -6,9 +6,12 @@ const _ = require('lodash')
 
 app.get('/getData', (req, res) => {
 
+  console.log(req.query)
+  const {symbol} = req.query
+
   const config = {
     method: 'get',
-    url: 'https://query2.finance.yahoo.com/v8/finance/chart/AMZN?region=US&lang=en-US&includePrePost=false&interval=1m&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance',
+    url: `https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?region=US&lang=en-US&includePrePost=false&interval=1m&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance`,
     headers: {
       'authority': 'query1.finance.yahoo.com',
       'sec-ch-ua': '"Google Chrome";v="95", "Chromium";v="95", ";Not A Brand";v="99"',
