@@ -3,17 +3,12 @@ import moment from 'moment';
 import styled from 'styled-components'
 import {useTable} from 'react-table'
 import _ from 'lodash'
-// import CssBaseline from '@material-ui/core/CssBaseline'
-// import MaUTable from '@material-ui/core/Table'
-// import TableBody from '@material-ui/core/TableBody'
-// import TableCell from '@material-ui/core/TableCell'
-// import TableHead from '@material-ui/core/TableHead'
-// import TableRow from '@material-ui/core/TableRow'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import StockCardList from "./StockCardList";
 import DatePicker from 'react-date-picker';
+import News from "./News";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -23,6 +18,7 @@ const Styles = styled.div`
     border: 1px solid black;
     font-family: sans-serif;
     font-size: small;
+
     tr {
       :last-child {
         td {
@@ -139,9 +135,9 @@ function App() {
     const [data, setData] = React.useState();
     const [earnings, setEarnings] = React.useState();
     const [currentDate, setCurrentDate] = React.useState(new Date());
+    const [symbols, setSymbols] = React.useState(['AMZN'])
 
     const alphabet = ['A', 'B'];
-
 
 
     const readEarningsData = (name) => {
@@ -161,21 +157,31 @@ function App() {
         //     })
     }
     return (
-                <Container style={{marginLeft: '0px'}}>
+        <Container style={{height: '490px', width: '100%', marginRight: '0px'}}>
+            <Row>
+                <Col sm={4}>
+                    <Container style={{marginLeft: '0px'}}>
+                        <Row>
+                            <Col sm={4}><Button onClick={readEarningsData}>Get Earnings</Button></Col>
+                            <Col sm={4}><Button onClick={readApiData}>Get Stock Data</Button></Col>
+                            <Col sm={4}><DatePicker value={currentDate} onChange={setCurrentDate}
+                                                    format={'MM-dd-yyyy'}></DatePicker></Col>
+                        </Row>
+                        <Row><StockCardList data={earnings}></StockCardList></Row>
+                        <Row>
+                            <Col sm={6}><Styles><MyData data={earnings} stockData={data}></MyData></Styles></Col>
+                            <Col sm={6}><ParsedData data={data}></ParsedData></Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={2}><Button onClick={readEarningsData}>Get Earnings</Button></Col>
-                        <Col sm={2}><Button onClick={readApiData}>Get Stock Data</Button></Col>
-                        <Col sm={5}><DatePicker value={currentDate} onChange={setCurrentDate} format={'MM-dd-yyyy'}></DatePicker></Col>
-                        <Col sm={5}></Col>
-                    </Row>
-                    <Row><StockCardList data={earnings}></StockCardList></Row>
-                    <Row>
-                        <Col sm={6}><Styles><MyData data={earnings} stockData={data}></MyData></Styles></Col>
-                        <Col sm={6}><ParsedData data={data}></ParsedData></Col>
-                    </Row>
+                    </Container>
+                </Col>
+                <Col sm={8} style={{paddingRight: '0px'}}>
+                    <News symbols={symbols}></News>
+                </Col>
+            </Row>
+        </Container>
 
-                </Container>
+
     );
 }
 
