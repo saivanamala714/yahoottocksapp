@@ -135,7 +135,7 @@ function App() {
     const [data, setData] = React.useState();
     const [earnings, setEarnings] = React.useState();
     const [currentDate, setCurrentDate] = React.useState(new Date());
-    const [symbols, setSymbols] = React.useState(['AMZN'])
+    const [symbols, setSymbols] = React.useState(['TSLA', 'AMZN', 'WMT'])
 
     const alphabet = ['A', 'B'];
 
@@ -145,6 +145,7 @@ function App() {
             .then(res => {
                 const persons = res.data;
                 setEarnings(persons);
+
             })
     }
 

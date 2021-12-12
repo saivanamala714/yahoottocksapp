@@ -76,9 +76,12 @@ app.get('/earnings', (req,res) =>{
 
 app.get('/news', (req,res) =>{
 
+  console.log(req.query)
+  const {symbol} = req.query
+
   var config = {
     method: 'get',
-    url: 'https://ycharts.com/news/articles?num=100&securityId=ORCL&useCountryCodeFilter=false',
+    url: `https://ycharts.com/news/articles?num=100&securityId=${symbol}&useCountryCodeFilter=false`,
     headers: {
       'authority': 'ycharts.com',
       'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
