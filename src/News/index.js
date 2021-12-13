@@ -23,7 +23,6 @@ const News = (props) => {
             axios.get(`/news?symbol=${symbol}`)
                 .then(res => {
                     const data = res.data;
-                    console.log(JSON.stringify(data))
                     newsData.push({symbol: symbol, last_updated: data.last_updated, articles: data.articles})
                     setNewsMap(newsData)
                     setLatest(data.last_updated)

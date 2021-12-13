@@ -6,7 +6,6 @@ const _ = require('lodash')
 
 app.get('/getData', (req, res) => {
 
-  console.log(req.query)
   const {symbol} = req.query
 
   const config = {
@@ -31,11 +30,9 @@ app.get('/getData', (req, res) => {
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
         res.send(error)
       });
 })
@@ -65,23 +62,20 @@ app.get('/earnings', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
         res.send(error)
       });
 })
 
 app.get('/news', (req,res) =>{
 
-  console.log(req.query)
   const {symbol} = req.query
 
   var config = {
     method: 'get',
-    url: `https://ycharts.com/news/articles?num=100&securityId=${symbol}&useCountryCodeFilter=false`,
+    url: `https://ycharts.com/news/articles?num=30&securityId=${symbol}&useCountryCodeFilter=false`,
     headers: {
       'authority': 'ycharts.com',
       'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -101,11 +95,9 @@ app.get('/news', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
         res.send(error)
       });
 

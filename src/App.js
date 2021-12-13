@@ -144,7 +144,10 @@ function App() {
         axios.get(`/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
             .then(res => {
                 const persons = res.data;
+
                 setEarnings(persons);
+                const symbols1 = persons.data.rows.map(e=> e.symbol)
+                setSymbols(symbols1)
 
             })
     }
