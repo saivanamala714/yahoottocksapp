@@ -49,7 +49,7 @@ const StockCard = (props) => {
             </Col>
             <Col sm={3}>
                 <p style={{fontSize: "x-small", width: '160px'}}>MKT Cap {props.record.marketCap}</p>
-                <Button onClick={readApiData} symbol={props.record.symbol}>Click</Button>
+                {/*<Button onClick={readApiData} symbol={props.record.symbol}>Click</Button>*/}
                 <StockBarGraph data={data}></StockBarGraph>
             </Col>
         </Row>

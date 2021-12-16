@@ -9,6 +9,7 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import StockCardList from "./StockCardList";
 import DatePicker from 'react-date-picker';
 import News from "./News";
+import FlashNews from "./FlashNews";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -136,6 +137,7 @@ function App() {
     const [earnings, setEarnings] = React.useState();
     const [currentDate, setCurrentDate] = React.useState(new Date());
     const [symbols, setSymbols] = React.useState(['TSLA', 'AMZN', 'WMT'])
+    const [map, setMap] = React.useState()
 
     const alphabet = ['A', 'B'];
 
@@ -154,14 +156,17 @@ function App() {
 
     const readApiData = (name) => {
 
-        // axios.get('/getData')
-        //     .then(res => {
-        //         const persons = res.data;
-        //         setData(persons);
-        //     })
+        axios.get('/getUS')
+            .then(res => {
+                const persons = res.data;
+                setMap(persons);
+            })
     }
     return (
-        <Container style={{height: '490px', width: '100%', marginRight: '0px'}}>
+        <Container style={{height: '490px', width: '100%', marginLeft: '2px'}}>
+            <Row>
+                <FlashNews></FlashNews>
+            </Row>
             <Row>
                 <Col sm={4}>
                     <Container style={{marginLeft: '0px'}}>
@@ -182,6 +187,10 @@ function App() {
                 <Col sm={8} style={{paddingRight: '0px'}}>
                     <News symbols={symbols}></News>
                 </Col>
+            </Row>
+            <Row>
+                <table dangerouslySetInnerHTML={{__html: map}}>
+                </table>
             </Row>
         </Container>
 

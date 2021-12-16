@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from "moment";
-import {Container, Row} from "react-bootstrap";
+import {Card, Container, Row} from "react-bootstrap";
 import NewsCard from './NewsCard';
 
 const NewsDetails = (props) => {
@@ -25,11 +25,16 @@ const NewsDetails = (props) => {
 
     //return <ul>{combinedNews.map(e => <li>{e.symbol}|{e.time.toString()}|{e.title}</li>)}</ul>
     //return <div>{JSON.stringify(filteredmap.articles)}</div>
-    return <Container>{_.map(dates, (a) => <Row>
-        <h4>{a}</h4>
-        <Container>
-            {grouped_data[a].map(b => <Row><NewsCard newsData={b}></NewsCard></Row>)}
-        </Container>
+    return <Container>{_.map(dates, (a) => <Row >
+        <Card>
+            <Card.Header style={{marginLeft: '-12px'}}>{a}</Card.Header>
+            <Card.Body style={{marginLeft: '-32px'}}>
+                <Container>
+                    {grouped_data[a].map(b => <Row><NewsCard newsData={b}></NewsCard></Row>)}
+                </Container>
+            </Card.Body>
+        </Card>
+
     </Row>)}</Container>
 }
 
