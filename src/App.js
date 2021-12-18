@@ -10,6 +10,7 @@ import StockCardList from "./StockCardList";
 import DatePicker from 'react-date-picker';
 import News from "./News";
 import FlashNews from "./FlashNews";
+import NewsCard from "./News/NewsCard";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -138,17 +139,18 @@ function App() {
     const [currentDate, setCurrentDate] = React.useState(new Date());
     const [symbols, setSymbols] = React.useState(['TSLA', 'AMZN', 'WMT'])
     const [map, setMap] = React.useState()
+    React.useEffect(()=>{readEarningsData()},[])
 
     const alphabet = ['A', 'B'];
 
 
     const readEarningsData = (name) => {
-        axios.get(`/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
+        axios.get(`/earnings?date=${moment(currentDate).add(2, 'days').format('yyyy-MM-DD')}`)
             .then(res => {
                 const persons = res.data;
 
                 setEarnings(persons);
-                const symbols1 = persons.data.rows.map(e=> e.symbol)
+                const symbols1 = persons.data.rows? persons.data.rows.map(e=> e.symbol) : []
                 setSymbols(symbols1)
 
             })
@@ -162,36 +164,39 @@ function App() {
                 setMap(persons);
             })
     }
+    //const itema = () => <NewsCard newsData={{title: 'Sai', symbol: 'Ram'}}></NewsCard>
+    const itema = () => <div style={{height: '80px', width: '80px', backgroundColor: 'red'}}>Ram</div>
     return (
-        <Container style={{height: '490px', width: '100%', marginLeft: '2px'}}>
-            <Row>
-                <FlashNews></FlashNews>
-            </Row>
-            <Row>
-                <Col sm={4}>
-                    <Container style={{marginLeft: '0px'}}>
-                        <Row>
-                            <Col sm={4}><Button onClick={readEarningsData}>Get Earnings</Button></Col>
-                            <Col sm={4}><Button onClick={readApiData}>Get Stock Data</Button></Col>
-                            <Col sm={4}><DatePicker value={currentDate} onChange={setCurrentDate}
-                                                    format={'MM-dd-yyyy'}></DatePicker></Col>
-                        </Row>
-                        <Row><StockCardList data={earnings}></StockCardList></Row>
-                        <Row>
-                            <Col sm={6}><Styles><MyData data={earnings} stockData={data}></MyData></Styles></Col>
-                            <Col sm={6}><ParsedData data={data}></ParsedData></Col>
-                        </Row>
+        <Container style={{height: '490px', margin: 0, padding: 0, width: '100%'}}>
+            <Row style={{width : '100%'}}>
+                <Col sm={2}><StockCardList data={earnings}></StockCardList>
+                    {/*<Container style={{marginLeft: '0px'}}>*/}
+                    {/*    /!*<Row>*!/*/}
+                    {/*    /!*    <Col sm={4}><Button onClick={readEarningsData}>Get Earnings</Button></Col>*!/*/}
+                    {/*    /!*    <Col sm={4}><Button onClick={readApiData}>Get Stock Data</Button></Col>*!/*/}
+                    {/*    /!*    <Col sm={4}><DatePicker value={currentDate} onChange={setCurrentDate}*!/*/}
+                    {/*    /!*                            format={'MM-dd-yyyy'}></DatePicker></Col>*!/*/}
+                    {/*    /!*</Row>*!/*/}
+                    {/*    <Row><StockCardList data={earnings}></StockCardList></Row>*/}
+                    {/*    <Row>*/}
+                    {/*        <Col sm={6}><Styles><MyData data={earnings} stockData={data}></MyData></Styles></Col>*/}
+                    {/*        <Col sm={6}><ParsedData data={data}></ParsedData></Col>*/}
+                    {/*    </Row>*/}
 
-                    </Container>
+                    {/*</Container>*/}
                 </Col>
                 <Col sm={8} style={{paddingRight: '0px'}}>
                     <News symbols={symbols}></News>
                 </Col>
+                <Col sm={2}><StockCardList data={earnings}></StockCardList></Col>
             </Row>
-            <Row>
-                <table dangerouslySetInnerHTML={{__html: map}}>
-                </table>
-            </Row>
+            {/*<Row>*/}
+            {/*    <table dangerouslySetInnerHTML={{__html: map}}>*/}
+            {/*    </table>*/}
+            {/*</Row>*/}
+            {/*<Row>*/}
+            {/*    <FlashNews cards={[itema]}></FlashNews>*/}
+            {/*</Row>*/}
         </Container>
 
 

@@ -3,10 +3,10 @@ import {Card, ListGroup} from "react-bootstrap";
 import StockCard from "./StockCard";
 
 const StockCardList = (props) => {
-    if(props.data == undefined) return null;
-    return <Card style={{width: '18rem'}}>
-        <Card.Header>Featured</Card.Header>
-        <ListGroup variant="flush">
+    if(props.data == undefined || props.data.data.rows == undefined) return null;
+    return <Card style={{width: '13rem'}}>
+        <Card.Header>Earnings</Card.Header>
+        <ListGroup variant="flush" style={{margin: 0, padding : 0}}>
             {props.data.data.rows.map(e=> <ListGroup.Item><StockCard record={e}></StockCard></ListGroup.Item>)}
         </ListGroup>
     </Card>

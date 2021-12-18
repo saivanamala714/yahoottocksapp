@@ -1,12 +1,14 @@
 import React from "react";
 import {Carousel} from "react-bootstrap";
 
-const FlashNews = (props) => {
+const FlashNews = ({cards}) => {
 
     const [news, setNews] = React.useState(['AAAAAAAAAAAAAA', 'BBBBBBBBBBBBBBBB'])
+    const My = () => <h1>Hello</h1>
 
-    return <Carousel style={{height: '60px', backgroundColor:'#efbfbfa1'}}>
-        {news.map(e=> <Carousel.Item interval={4000}>{e}</Carousel.Item>)}
+    return <Carousel style={{backgroundColor:'#efbfbfa1'}}>
+        {cards.map(e=> <Carousel.Item interval={4000}>{e()}</Carousel.Item>)}
+        {/*{news.map(e=> <Carousel.Item interval={4000}>{e}</Carousel.Item>)}*/}
     </Carousel>
 
 

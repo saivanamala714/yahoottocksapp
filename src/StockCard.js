@@ -29,22 +29,22 @@ const StockCard = (props) => {
 
     }
 
-    return <Container>
+    return <Container style={{padding: 0, margin: 0}}>
 
         <Row>
-            <Col sm={3}>
+            <Col sm={2} style={{padding: 0, margin: 0}}>
                     <span style={{
                         height: '40px',
                         width: '40px',
                         backgroundColor: '#bbb',
-                        borderRadius: '50%',
+                        borderRadius: '0%',
                         fontFamily: 'sans-serif',
                         fontSize: 'x-small',
                         fontWeight: 'bolder',
                         display: 'inline-block'
                     }}><p style={{
-                        marginTop: '13px',
-                        marginLeft: '8px'
+                        marginTop: '3px',
+                        marginLeft: '6px'
                     }}> {props.record.symbol}</p></span>
             </Col>
             <Col sm={3}>
@@ -53,10 +53,6 @@ const StockCard = (props) => {
                 <StockBarGraph data={data}></StockBarGraph>
             </Col>
         </Row>
-        <Row style={{width: '15500px'}}>
-
-        </Row>
-
     </Container>
 }
 
