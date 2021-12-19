@@ -7,10 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import StockCardList from "./StockCardList";
-import DatePicker from 'react-date-picker';
 import News from "./News";
-import FlashNews from "./FlashNews";
-import NewsCard from "./News/NewsCard";
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -139,9 +138,33 @@ function App() {
     const [currentDate, setCurrentDate] = React.useState(new Date());
     const [symbols, setSymbols] = React.useState(['TSLA', 'AMZN', 'WMT'])
     const [map, setMap] = React.useState()
-    React.useEffect(()=>{readEarningsData()},[])
+    const [stockHistory, setStockHistory] = React.useState(null)
+    React.useEffect(() => {
+        readEarningsData()
+    }, [])
 
     const alphabet = ['A', 'B'];
+
+    const options = {
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'My chart'
+        },
+        series: [
+            {
+                data: [{x: 1, y: 2}]
+            }
+        ]
+    };
+
+    // const getOptions = () =>{
+    //     if(!stockHistory) return []
+    //     for (let a  = 0; a < stockHistory.TimeInfo.Ticks.length < 0; a++){
+    //         console.log(stockHistory.TimeInfo[a])
+    //     }
+    // }
 
 
     const readEarningsData = (name) => {
@@ -150,8 +173,42 @@ function App() {
                 const persons = res.data;
 
                 setEarnings(persons);
-                const symbols1 = persons.data.rows? persons.data.rows.map(e=> e.symbol) : []
+                const symbols1 = persons.data.rows ? persons.data.rows.map(e => e.symbol) : []
                 setSymbols(symbols1)
+
+            })
+    }
+
+    const getStockHistory = (name) => {
+        axios.get(`/getStockHistory?symbol=${name}`)
+            .then(res => {
+                const persons = res.data;
+
+                let data = []
+                for (let a = 0; a < persons.TimeInfo.Ticks.length; a++) {
+                    console.log(persons.TimeInfo.Ticks[a], persons.Series[0].DataPoints[a][0])
+                    //const x = moment.utc(persons.TimeInfo.Ticks[a]).toString()
+                    const x = persons.TimeInfo.Ticks[a];
+                    console.log('x--->', x)
+                    data.push({x, y: persons.Series[0].DataPoints[a][0]})
+                }
+
+
+                const options = {
+                    accessibility: {
+                        point: {valuePrefix: 'hello'},
+                        enabled: true
+                    },
+                    chart: {
+                        type: 'spline'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    series: [{data}]
+                };
+
+                setStockHistory(options);
 
             })
     }
@@ -167,9 +224,16 @@ function App() {
     //const itema = () => <NewsCard newsData={{title: 'Sai', symbol: 'Ram'}}></NewsCard>
     const itema = () => <div style={{height: '80px', width: '80px', backgroundColor: 'red'}}>Ram</div>
     return (
-        <Container style={{height: '490px', margin: 0, padding: 0, width: '100%'}}>
-            <Row style={{width : '100%'}}>
-                <Col sm={2}><StockCardList data={earnings}></StockCardList>
+        // <Container style={{padding: 0, maxWidth: "none"}}>
+        //     <Row style={{padding: 0, margin: 0}}>
+        //         <Col sm={4} style={{padding: 0, margin: 0}}><div style={{height: '10x', backgroundColor: 'red'}}>Hello</div></Col>
+        //         <Col sm={4} style={{padding: 0, margin: 0}}><div style={{height: '10x', backgroundColor: 'red'}}>Hello</div></Col>
+        //         <Col sm={4} style={{padding: 0, margin: 0}}><div style={{height: '10x', backgroundColor: 'red'}}>Hello</div></Col>
+        //     </Row>
+        // </Container>
+        <Container style={{height: '490px', padding: 0, maxWidth: "none"}}>
+            <Row style={{padding: 0, margin: 0}}>
+                <Col sm={2} style={{padding: 0, margin: 0}}><StockCardList data={earnings}></StockCardList>
                     {/*<Container style={{marginLeft: '0px'}}>*/}
                     {/*    /!*<Row>*!/*/}
                     {/*    /!*    <Col sm={4}><Button onClick={readEarningsData}>Get Earnings</Button></Col>*!/*/}
@@ -185,10 +249,8 @@ function App() {
 
                     {/*</Container>*/}
                 </Col>
-                <Col sm={8} style={{paddingRight: '0px'}}>
-                    <News symbols={symbols}></News>
-                </Col>
-                <Col sm={2}><StockCardList data={earnings}></StockCardList></Col>
+                <Col sm={8} style={{padding: 2, margin: 0}}><News symbols={symbols}></News></Col>
+                <Col sm={2} style={{padding: 0, margin: 0}}><StockCardList data={earnings}></StockCardList></Col>
             </Row>
             {/*<Row>*/}
             {/*    <table dangerouslySetInnerHTML={{__html: map}}>*/}
@@ -197,6 +259,15 @@ function App() {
             {/*<Row>*/}
             {/*    <FlashNews cards={[itema]}></FlashNews>*/}
             {/*</Row>*/}
+            <Row>
+                <Col><Button onClick={getStockHistory}></Button></Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h4>{JSON.stringify(stockHistory)}</h4>
+                    <HighchartsReact highcharts={Highcharts} options={stockHistory} constructorType={'stockChart'}/>
+                </Col>
+            </Row>
         </Container>
 
 

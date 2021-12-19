@@ -37,12 +37,12 @@ const News = (props) => {
            return data;
     }
 
-    return <Container style={{padding: 0}}>
-        <Row style={{height: `${headerHeight}px`, width: '100%'}}>
+    return <Container style={{padding: 0, margin: 0}}>
+        <Row style={{height: `${headerHeight}px`, padding: 0, margin: 0}}>
             <Button onClick={getNews} symbols={props.symbols}>get news</Button>
             <NewsHeader data={getStats()}></NewsHeader>
         </Row>
-        <Row style={{height: `${detailsHeight}px`, width: '100%', padding: 0}}>
+        <Row style={{height: `${detailsHeight}px`, width: '100%', padding: 0, margin: 0}}>
             <NewsDetails newsMap={newsMap} latest={latest}></NewsDetails>
         </Row>
 

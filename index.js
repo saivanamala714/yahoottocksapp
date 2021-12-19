@@ -141,6 +141,84 @@ app.get('/getUS', (req,res) =>{
 
 })
 
+app.get('/getStockDetails', (req,res) =>{
+
+  const {symbol} = req.query
+
+  var config = {
+    method: 'get',
+    url: `https://www.wsj.com/market-data/quotes/${symbol}?id=%7B%22ticker%22%3A%22${symbol}%22%2C%22countryCode%22%3A%22US%22%2C%22exchange%22%3A%22%22%2C%22type%22%3A%22STOCK%22%2C%22path%22%3A%22%2F${symbol}%22%7D&type=quotes_chart`,
+    headers: {
+      'authority': 'www.wsj.com',
+      'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
+      'sec-ch-ua-mobile': '?0',
+      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+      'sec-ch-ua-platform': '"macOS"',
+      'accept': '*/*',
+      'sec-fetch-site': 'same-origin',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-dest': 'empty',
+      'referer': `https://www.wsj.com/market-data/quotes/${symbol}`,
+      'accept-language': 'en-US,en;q=0.9',
+      'cookie': 'DJSESSION=country%3Dus%7C%7Ccontinent%3Dna%7C%7Cregion%3Dks%7C%7Ccity%3Dstilwell%7C%7Clatitude%3D38.7858%7C%7Clongitude%3D-94.6907%7C%7Ctimezone%3Dcst%7C%7Czip%3D66085; wsjregion=na%2Cus; gdprApplies=false; ccpaApplies=false; usr_prof_v2=eyJpYyI6MH0%3D; ab_uuid=9fa1d722-c96d-4f73-9317-87618b79f240; usr_bkt=q85AaJVP78; cX_P=kxc34r6c7qy9zc4x; cX_S=kxc34r6gt57ffb44; wsjregion=na%2Cus; gdprApplies=false; ccpaApplies=false; usr_prof_v2=eyJpYyI6MX0%3D'
+    }
+  };
+
+  axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        res.send(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.send(error)
+      });
+
+
+
+
+})
+
+app.get('/getStockHistory', (req,res) =>{
+
+  const {symbol} = req.query
+
+  var config = {
+    method: 'get',
+    url: 'https://api-secure.wsj.net/api/michelangelo/timeseries/history?json=%7B%22Step%22%3A%22P1D%22%2C%22TimeFrame%22%3A%22P29D%22%2C%22EntitlementToken%22%3A%2257494d5ed7ad44af85bc59a51dd87c90%22%2C%22IncludeMockTick%22%3Atrue%2C%22FilterNullSlots%22%3Afalse%2C%22FilterClosedPoints%22%3Atrue%2C%22IncludeClosedSlots%22%3Afalse%2C%22IncludeOfficialClose%22%3Atrue%2C%22InjectOpen%22%3Afalse%2C%22ShowPreMarket%22%3Afalse%2C%22ShowAfterHours%22%3Afalse%2C%22UseExtendedTimeFrame%22%3Atrue%2C%22WantPriorClose%22%3Atrue%2C%22IncludeCurrentQuotes%22%3Afalse%2C%22ResetTodaysAfterHoursPercentChange%22%3Afalse%2C%22Series%22%3A%5B%7B%22Key%22%3A%22STOCK%2FUS%2FXNAS%2FAMZN%22%2C%22Dialect%22%3A%22Charting%22%2C%22Kind%22%3A%22Ticker%22%2C%22SeriesId%22%3A%22s1%22%2C%22DataTypes%22%3A%5B%22Last%22%5D%7D%5D%7D&ckey=57494d5ed7',
+    headers: {
+      'Connection': 'keep-alive',
+      'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
+      'Accept': 'application/json, text/javascript, */*; q=0.01',
+      'Dylan2010.EntitlementToken': '57494d5ed7ad44af85bc59a51dd87c90',
+      'sec-ch-ua-mobile': '?0',
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+      'sec-ch-ua-platform': '"macOS"',
+      'Origin': 'https://www.wsj.com',
+      'Sec-Fetch-Site': 'cross-site',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Dest': 'empty',
+      'Referer': 'https://www.wsj.com/',
+      'Accept-Language': 'en-US,en;q=0.9'
+    }
+  };
+
+  axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        res.send(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.send(error)
+      });
+
+
+
+
+
+})
+
 
 
 

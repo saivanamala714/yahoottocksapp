@@ -15,6 +15,11 @@ import StockBarGraph from "./StockBarGraph";
 
 const StockCard = (props) => {
     const [data, setData] = React.useState();
+    const [stockData, setStockData] = React.useState();
+    React.useEffect(()=>{
+        readStockData(props.record.symbol)
+
+    }, [props])
 
     const readApiData = (e) => {
         const name =e.currentTarget.attributes[0].value
@@ -25,32 +30,35 @@ const StockCard = (props) => {
             });
     }
 
+    const readStockData = (name) => {
+        axios.get(`/getStockDetails?symbol=${name}`)
+            .then(res => {
+                const persons = res.data;
+                setStockData(persons);
+            });
+    }
+
     const ParsedData = ({data}) => {
 
     }
 
     return <Container style={{padding: 0, margin: 0}}>
 
-        <Row>
+        <Row style={{padding : 0, margin : 0}}>
             <Col sm={2} style={{padding: 0, margin: 0}}>
                     <span style={{
-                        height: '40px',
-                        width: '40px',
-                        backgroundColor: '#bbb',
-                        borderRadius: '0%',
                         fontFamily: 'sans-serif',
                         fontSize: 'x-small',
                         fontWeight: 'bolder',
                         display: 'inline-block'
                     }}><p style={{
-                        marginTop: '3px',
-                        marginLeft: '6px'
                     }}> {props.record.symbol}</p></span>
             </Col>
             <Col sm={3}>
                 <p style={{fontSize: "x-small", width: '160px'}}>MKT Cap {props.record.marketCap}</p>
-                {/*<Button onClick={readApiData} symbol={props.record.symbol}>Click</Button>*/}
-                <StockBarGraph data={data}></StockBarGraph>
+                <p style={{fontSize: "x-small", width: '160px'}}>{props.record.time}</p>
+                {stockData && <span style={{display: 'inline-block' , fontSize: 'x-small'}}>{(stockData.data.quoteData.Financials.PublicFloat/1000000000).toFixed(3) + 'B'}</span>}
+                {/*<StockBarGraph data={data}></StockBarGraph>*/}
             </Col>
         </Row>
     </Container>
