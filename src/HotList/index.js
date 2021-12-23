@@ -3,9 +3,10 @@ import {Col, Container, Row} from "react-bootstrap";
 import axios from "axios";
 import _ from 'lodash';
 import {w3cwebsocket as W3CWebSocket} from "websocket";
+import ws from 'ws';
 
 const client = new W3CWebSocket('wss://websocket.stocktwits.com/stream?symbol_stream=686&symbols=AAL,AAPL,ACB,ADA.X,ALDX,AMC,AMD,AMZN,AQST,ATOS,BA,BABA,BAC,BB,BE,BFRI,BNGO,BRG,BTC.X,BYND,CCL,CEI,CGC,CLOV,COIN,CRON,CTRM,DAL,DGNS,DIA,DIS,DJIA,DKNG,DOGE.X,ENPH,ETH.X,F,FB,FCEL,FSR,GE,GEVO,GILD,GME,GNUS,GOOG,GOOGL,GPRO,HCMC,HEX.X,HNST,IBIO,IDEX,INO,INTC,JAGX,JNUG,JPM,LCID,LQDT,LTC.X,LTRY,LUNA.X,MARA,MRNA,MSFT,MU,MVIS,NAKD,NFLX,NIO,NKE,NKLA,NKTR,NNDM,NOK,NVAX,NVDA,OCGN,PFE,PLBY,PLTR,PLUG,PRPL,PYPL,QQQ,RBA,RIOT,RKT,ROKU,SAVA,SBUX,SHIB.X,SHOP,SNAP,SNDL,SOPA,SOS,SPCE,SPX,SPY,SQ,SRNE,T,TLRY,TOPS,TSLA,TWTR,UBER,UVXY,V,VISL,VSAT,VXRT,WISH,WKHS,WMT,XOM,XRP.X,XSPA,YFI.X,ZOM');
-
+const client1 = new W3CWebSocket('ws://localhost:9898/');
 
 const HotList = () => {
 
@@ -29,6 +30,13 @@ const HotList = () => {
             })
     }, [])
 
+    client1.onmessage = (message) => {
+
+        console.log('received')
+
+
+    }
+
     client.onmessage = (message) => {
 
         const temp = JSON.parse(message.data);
@@ -48,7 +56,7 @@ const HotList = () => {
             //const diff = (a.PreviousClose && latestPrice)? (100 * Math.abs( (a.PreviousClose - latestPrice) / ( (a.PreviousClose+latestPrice)/2 ) )).toFixed(2) : '_';
             const diff = filteredData.length > 0 ? filteredData[0].PercentChange.toFixed(2) : '_'
             const color = a.PreviousClose ? a.PreviousClose > latestPrice ? 'red' : 'green' : 'black';
-            console.log('===>', a.PreviousClose, diff, latestPrice)
+
             return <Row style={{fontSize: 'x-small', fontWeight: 600}}>
                 <Col sm={3} style={{fontSize: 'xx-small'}}>{b}</Col>
                 <Col sm={3}>{a.PreviousClose}</Col>

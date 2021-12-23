@@ -27,7 +27,8 @@
     "react-vis": "^1.11.7",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.1.2",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "ws": "^7.5.5"
   },
   "scripts": {
     "build": "webpack --mode development",
@@ -36,7 +37,8 @@
     "eject": "react-scripts eject",
     "localServer": "nodemon index.js",
     "local": "npm run localServer && npm run start",
-    "dev": "concurrently --kill-others \"npm run localServer\" \"npm run start\""
+    "localSocket": "nodemon socket",
+    "dev": "concurrently --kill-others \"npm run localServer\" \"npm run start\" \"npm run localSocket\" "
   },
   "eslintConfig": {
     "extends": [

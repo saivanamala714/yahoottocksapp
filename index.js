@@ -41,7 +41,7 @@ app.get('/getData', (req, res) => {
 
 
 app.get('/earnings', (req,res) =>{
-  console.log(req.query.date)
+  //console.log(req.query.date)
   const {date} = req.query;
   var config = {
     method: 'get',
@@ -131,11 +131,11 @@ app.get('/getUS', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
         res.send(error)
       });
 
@@ -168,11 +168,11 @@ app.get('/getStockDetails', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
         res.send(error)
       });
 
@@ -207,11 +207,11 @@ app.get('/getStockHistory', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
         res.send(error)
       });
 })
@@ -243,11 +243,11 @@ app.get('/getHotList', (req,res) =>{
 
   axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         res.send(response.data)
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
         res.send(error)
       });
 })
@@ -291,10 +291,10 @@ function startProcess() {
             e.SymbolLinkHtml = null;
             return e})
           allStockInfo = parsedData;
-          // console.log(JSON.stringify(parsedData))
+          // //console.log(JSON.stringify(parsedData))
         })
         .catch(function (error) {
-          console.log(error);
+          //console.log(error);
         });
   }, 10000);
 
@@ -305,7 +305,7 @@ function startProcess() {
 
 
 app.listen(port, () => {
- startProcess();
+ //startProcess();
 })
 
 // const temp = {
@@ -326,7 +326,7 @@ app.listen(port, () => {
 //
 //
 //
-// console.log(JSON.stringify(derivedColumns))
+// //console.log(JSON.stringify(derivedColumns))
 
 
 
