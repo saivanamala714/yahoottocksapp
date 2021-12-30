@@ -12,6 +12,7 @@ const client = new W3CWebSocket(wsURL);
 const client2 = new W3CWebSocket(wsURL2);
 const client1 = new W3CWebSocket('ws://localhost:9898/');
 const client_hot_list = new W3CWebSocket(wsURL_HOTLIST);
+const all_list = new W3CWebSocket('wss://jerq-aggregator-prod.aws.barchart.com/socket.io/?EIO=3&transport=websocket');
 
 const HotList = () => {
 
@@ -36,9 +37,9 @@ const HotList = () => {
             })
     }, [])
 
-    client1.onmessage = (message) => {
+    all_list.onmessage = (message) => {
 
-        console.log('received')
+        console.log('received', message)
 
 
     }
