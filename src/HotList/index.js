@@ -76,11 +76,11 @@ const HotList = () => {
             //const diff = (a.PreviousClose && latestPrice)? Math.ceil(100 * Math.abs( (a.PreviousClose - latestPrice) / ( (a.PreviousClose+latestPrice)/2 ) )) : '_';
             //const diff = (a.PreviousClose && latestPrice)? (100 * Math.abs( (a.PreviousClose - latestPrice) / ( (a.PreviousClose+latestPrice)/2 ) )).toFixed(2) : '_';
             const diff = filteredData.length > 0 ? filteredData[0].PercentChange.toFixed(2) : '_'
-            const color = a.PreviousClose ? a.PreviousClose > latestPrice ? 'red' : 'green' : 'black';
+            const color = a ? a.PreviousClose ? a.PreviousClose > latestPrice ? 'red' : 'green' : 'black' : "black";
 
             return <Row style={{fontSize: 'x-small', fontWeight: 600}}>
                 <Col sm={3} style={{fontSize: 'xx-small'}}>{b}</Col>
-                <Col sm={3}>{a.PreviousClose}</Col>
+                <Col sm={3}>{a ? a.PreviousClose : 0}</Col>
                 <Col sm={4}>{latestPrice > 0 ?latestPrice.toFixed(2): null}</Col>
                 <Col sm={2}style={{color, fontSize: 'x-small'}}>{diff}</Col>
             </Row>
