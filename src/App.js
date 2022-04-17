@@ -11,6 +11,7 @@ import News from "./News";
 import ReactHighcharts from 'react-highcharts/ReactHighstock.src'
 import LiveNews from "./Live";
 import HotList from "./HotList";
+import {APIHOST} from "./constants";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -171,7 +172,7 @@ function App() {
 
 
     const readEarningsData = (name) => {
-        axios.get(`/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
+        axios.get(`${APIHOST}/earnings?date=${moment(currentDate).format('yyyy-MM-DD')}`)
             .then(res => {
                 const persons = res.data;
 
@@ -292,7 +293,7 @@ function App() {
     }
 
     const getStockHistory = (name) => {
-        axios.get(`/getStockHistory?symbol=${name}`)
+        axios.get(`${APIHOST}/getStockHistory?symbol=${name}`)
             .then(res => {
                 const persons = res.data;
 
@@ -313,7 +314,7 @@ function App() {
 
     const readApiData = (name) => {
 
-        axios.get('/getUS')
+        axios.get(`${APIHOST}/getUS`)
             .then(res => {
                 const persons = res.data;
                 setMap(persons);

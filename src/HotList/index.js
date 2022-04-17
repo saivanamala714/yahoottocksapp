@@ -3,7 +3,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import axios from "axios";
 import _ from 'lodash';
 import {w3cwebsocket as W3CWebSocket} from "websocket";
-import {ALL_STOCKS} from "../constants";
+import {ALL_STOCKS, APIHOST} from "../constants";
 const stocks = ALL_STOCKS.split(',');
 const wsURL = `wss://websocket.stocktwits.com/stream?symbol_stream=686&symbols=${stocks.slice(0,80)}`;
 const wsURL2 = `wss://websocket.stocktwits.com/stream?symbol_stream=686&symbols=${stocks.slice(80,160)}`;
@@ -21,7 +21,7 @@ const HotList = () => {
     const [data, setData] = React.useState([]);
     const [callPutRatio, setCallPutRatio] = React.useState({});
     React.useEffect(async () => {
-        await axios.get(`/getHotList?symbols=${stocks.slice(0,500)}`)
+        await axios.get(`${APIHOST}/getHotList?symbols=${stocks.slice(0,500)}`)
             .then(res => {
                 const persons = res.data;
                 setList({...persons, ...list})
@@ -30,7 +30,7 @@ const HotList = () => {
     }, [])
 
     React.useEffect(() => {
-        axios.get(`/getCallPutRatio`)
+        axios.get(`${APIHOST}/getCallPutRatio`)
             .then(res => {
                 const persons = res.data;
                 setCallPutRatio(persons)

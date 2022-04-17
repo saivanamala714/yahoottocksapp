@@ -4,6 +4,7 @@ import NewsHeader from "./NewsHeader";
 import NewsDetails from "./NewsDetails";
 import axios from "axios";
 import _ from 'lodash';
+import {APIHOST} from "../constants";
 
 const News = (props) => {
     const {innerWidth: width, innerHeight: height} = window;
@@ -20,7 +21,7 @@ const News = (props) => {
         const symbols = temp.split(',');
         const newsData = []
         await _.forEach(symbols, symbol=>{
-            axios.get(`/news?symbol=${symbol}`)
+            axios.get(`${APIHOST}/news?symbol=${symbol}`)
                 .then(res => {
                     const data = res.data;
                     newsData.push({symbol: symbol, last_updated: data.last_updated, articles: data.articles})

@@ -10,6 +10,7 @@ import { PickD3Scale, scaleTime } from '@visx/scale';
 import { extent } from 'd3-array';
 import {number} from "prop-types";
 import StockBarGraph from "./StockBarGraph";
+import {APIHOST} from "./constants";
 
 
 
@@ -23,7 +24,7 @@ const StockCard = (props) => {
 
     const readApiData = (e) => {
         const name =e.currentTarget.attributes[0].value
-                 axios.get(`/getData?symbol=${name}`)
+                 axios.get(`${APIHOST}/getData?symbol=${name}`)
             .then(res => {
                 const persons = res.data;
                 setData(persons);
@@ -31,7 +32,7 @@ const StockCard = (props) => {
     }
 
     const readStockData = (name) => {
-        axios.get(`/getStockDetails?symbol=${name}`)
+        axios.get(`${APIHOST}/getStockDetails?symbol=${name}`)
             .then(res => {
                 const persons = res.data;
                 setStockData(persons);
