@@ -63,5 +63,5 @@
     "concurrently": "^6.4.0"
   },
   "proxy": "http://localhost:3001",
-  "engines": {"node": "8"}
+  "engines": {"node": ":8"}
 }
