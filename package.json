@@ -32,8 +32,8 @@
     "ws": "^7.5.5"
   },
   "scripts": {
-    "build": "node index.js",
-    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts build",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "localServer": "nodemon index.js",
