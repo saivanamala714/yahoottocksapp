@@ -5,6 +5,8 @@ const axios = require('axios');
 const _ = require('lodash')
 const moment = require('moment');
 const async = require("async");
+const bodyParser = require('body-parser')
+const path = require('path')
 
 app.get('/getData', (req, res) => {
 
@@ -302,6 +304,14 @@ function startProcess() {
 
 }
 
+
+const distpath = 'build'
+app.use(express.static(path.join(__dirname,'..',distpath)))
+app.use(bodyParser.urlencoded({extended: false}))
+
+app.get('/',(req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'))
+})
 
 
 
